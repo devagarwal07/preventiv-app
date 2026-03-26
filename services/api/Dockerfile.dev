@@ -1,0 +1,17 @@
+FROM node:20-alpine AS base
+
+WORKDIR /workspace
+RUN corepack enable
+
+COPY package.json pnpm-workspace.yaml tsconfig.json ./
+COPY services/api/package.json services/api/package.json
+COPY packages/shared-types/package.json packages/shared-types/package.json
+COPY packages/validators/package.json packages/validators/package.json
+
+RUN pnpm install
+
+COPY . .
+
+WORKDIR /workspace/services/api
+EXPOSE 3001
+CMD ["pnpm", "dev"]
