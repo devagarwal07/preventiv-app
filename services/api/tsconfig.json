@@ -1,0 +1,25 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "outDir": "dist",
+        "baseUrl": "../..",
+        "paths": {
+            "@prevntiv/shared-types": [
+                "packages/shared-types/src/index.ts"
+            ],
+            "@prevntiv/validators": [
+                "packages/validators/src/index.ts"
+            ]
+        },
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "types": [
+            "node"
+        ],
+        "noEmit": false
+    },
+    "include": [
+        "src"
+    ]
+}
