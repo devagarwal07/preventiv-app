@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "allowJs": false,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "baseUrl": ".",
+        "paths": {
+            "@prevntiv/shared-types": [
+                "packages/shared-types/src"
+            ],
+            "@prevntiv/validators": [
+                "packages/validators/src"
+            ],
+            "@prevntiv/ui-components": [
+                "packages/ui-components/src"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "dist",
+        "build",
+        ".next",
+        ".expo",
+        "coverage"
+    ]
+}
