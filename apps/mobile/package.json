@@ -1,0 +1,12 @@
+{
+    "name": "@prevntiv/mobile",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "echo \"Scaffold pending (Prompt 7.1)\"",
+        "build": "echo \"Mobile build pending\"",
+        "test": "echo \"Mobile tests pending\"",
+        "lint": "echo \"Mobile lint pending\"",
+        "typecheck": "echo \"Mobile typecheck pending\""
+    }
+}

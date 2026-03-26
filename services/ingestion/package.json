@@ -1,0 +1,12 @@
+{
+    "name": "@prevntiv/ingestion",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "echo \"Scaffold pending (Prompt 2.2/2.3)\"",
+        "build": "echo \"Ingestion build pending\"",
+        "test": "echo \"Ingestion tests pending\"",
+        "lint": "echo \"Ingestion lint pending\"",
+        "typecheck": "echo \"Ingestion typecheck pending\""
+    }
+}

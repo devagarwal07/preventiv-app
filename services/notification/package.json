@@ -1,0 +1,12 @@
+{
+    "name": "@prevntiv/notification",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "node src/index.js",
+        "build": "echo \"Notification build pending\"",
+        "test": "echo \"Notification tests pending\"",
+        "lint": "echo \"Notification lint pending\"",
+        "typecheck": "echo \"Notification typecheck pending\""
+    }
+}

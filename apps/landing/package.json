@@ -1,0 +1,12 @@
+{
+    "name": "@prevntiv/landing",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "echo \"Scaffold pending (Prompt 11.1)\"",
+        "build": "echo \"Landing build pending\"",
+        "test": "echo \"Landing tests pending\"",
+        "lint": "echo \"Landing lint pending\"",
+        "typecheck": "echo \"Landing typecheck pending\""
+    }
+}

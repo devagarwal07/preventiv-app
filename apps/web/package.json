@@ -1,0 +1,12 @@
+{
+    "name": "@prevntiv/web",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "echo \"Scaffold pending (Prompt 6.1)\"",
+        "build": "echo \"Web build pending\"",
+        "test": "echo \"Web tests pending\"",
+        "lint": "echo \"Web lint pending\"",
+        "typecheck": "echo \"Web typecheck pending\""
+    }
+}
