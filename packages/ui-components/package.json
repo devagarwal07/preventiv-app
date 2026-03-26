@@ -1,0 +1,14 @@
+{
+    "name": "@prevntiv/ui-components",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "main": "./src/index.ts",
+    "types": "./src/index.ts",
+    "scripts": {
+        "build": "tsc -p tsconfig.json",
+        "test": "echo \"No tests yet\"",
+        "lint": "echo \"UI components lint pending\"",
+        "typecheck": "tsc -p tsconfig.json --noEmit"
+    }
+}
