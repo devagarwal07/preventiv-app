@@ -1,0 +1,25 @@
+{
+    "title": "Database",
+    "panels": [
+        {
+            "type": "timeseries",
+            "title": "Connections",
+            "targets": [
+                {
+                    "expr": "pg_stat_database_numbackends"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "Transaction Commit Rate",
+            "targets": [
+                {
+                    "expr": "rate(pg_stat_database_xact_commit[5m])"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 38,
+    "version": 1
+}

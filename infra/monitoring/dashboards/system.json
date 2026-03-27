@@ -1,0 +1,34 @@
+{
+    "title": "System",
+    "panels": [
+        {
+            "type": "timeseries",
+            "title": "CPU",
+            "targets": [
+                {
+                    "expr": "100 - (avg by(instance)(irate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "Memory",
+            "targets": [
+                {
+                    "expr": "(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "Disk",
+            "targets": [
+                {
+                    "expr": "(1 - (node_filesystem_free_bytes / node_filesystem_size_bytes)) * 100"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 38,
+    "version": 1
+}

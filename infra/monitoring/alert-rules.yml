@@ -1,0 +1,38 @@
+groups:
+  - name: prevntiv-alerts
+    rules:
+      - alert: ApiErrorRateHigh
+        expr: |
+          sum(rate(http_requests_total{status=~"5.."}[5m]))
+          /
+          sum(rate(http_requests_total[5m]))
+          > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API error rate above 5%"
+
+      - alert: DatabaseConnectionsHigh
+        expr: pg_stat_database_numbackends / 100 > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Database connections above 80%"
+
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_total_system_memory_bytes > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis memory usage above 80%"
+
+      - alert: DiskUsageHigh
+        expr: (node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) / node_filesystem_size_bytes{mountpoint="/"} > 0.85
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Disk usage above 85%"

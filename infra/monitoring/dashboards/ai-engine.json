@@ -1,0 +1,25 @@
+{
+    "title": "AI Engine",
+    "panels": [
+        {
+            "type": "timeseries",
+            "title": "Inference Latency p95",
+            "targets": [
+                {
+                    "expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{route=\"/ai/anomaly-detect\"}[5m])) by (le))"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "Anomaly Requests",
+            "targets": [
+                {
+                    "expr": "sum(rate(ai_analysis_requests_total[5m]))"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 38,
+    "version": 1
+}

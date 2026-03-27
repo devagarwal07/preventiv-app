@@ -1,0 +1,34 @@
+{
+    "title": "Business",
+    "panels": [
+        {
+            "type": "timeseries",
+            "title": "Vitals Logged / Day",
+            "targets": [
+                {
+                    "expr": "sum(increase(vitals_ingested_total[1d]))"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "AI Analysis Requests / Day",
+            "targets": [
+                {
+                    "expr": "sum(increase(ai_analysis_requests_total[1d]))"
+                }
+            ]
+        },
+        {
+            "type": "timeseries",
+            "title": "Alerts Triggered / Day",
+            "targets": [
+                {
+                    "expr": "sum(increase(http_requests_total{route=\"/notifications/internal\"}[1d]))"
+                }
+            ]
+        }
+    ],
+    "schemaVersion": 38,
+    "version": 1
+}
