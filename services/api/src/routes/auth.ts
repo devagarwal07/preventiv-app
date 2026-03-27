@@ -16,6 +16,7 @@ import {
     verifyOtp
 } from "../services/authService";
 import { authenticate } from "../middleware/authenticate";
+import { userRateLimit } from "../middleware/userRateLimit";
 import { asyncHandler } from "../utils/asyncHandler";
 import { success } from "../utils/response";
 
@@ -70,11 +71,23 @@ authRouter.post("/auth/logout", authenticate, asyncHandler(async (req: Request, 
     return success(res, { loggedOut: true });
 }));
 
-authRouter.post("/auth/otp/send", asyncHandler(async (req: Request, res: Response) => {
-    const payload = OTPRequestSchema.parse(req.body);
-    await sendOtp(payload.phone);
-    return success(res, { sent: true });
-}));
+authRouter.post(
+    "/auth/otp/send",
+    userRateLimit({
+        keyPrefix: "rate:auth:otp",
+        max: 5,
+        windowSeconds: 60 * 60,
+        extractor: (req) => {
+            const phone = (req.body as { phone?: string } | undefined)?.phone;
+            return typeof phone === "string" ? phone : null;
+        }
+    }),
+    asyncHandler(async (req: Request, res: Response) => {
+        const payload = OTPRequestSchema.parse(req.body);
+        await sendOtp(payload.phone);
+        return success(res, { sent: true });
+    })
+);
 
 authRouter.post("/auth/otp/verify", asyncHandler(async (req: Request, res: Response) => {
     const payload = OTPVerifySchema.parse(req.body);
