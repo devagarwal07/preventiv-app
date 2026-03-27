@@ -1,0 +1,45 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Prevntiv API",
+        "version": "1.0.0",
+        "description": "Generated API contract for core Prevntiv services"
+    },
+    "servers": [
+        {
+            "url": "https://api.prevntiv.com"
+        }
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "summary": "Health check",
+                "responses": {
+                    "200": {
+                        "description": "Service status"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "summary": "User login",
+                "responses": {
+                    "200": {
+                        "description": "Login success"
+                    }
+                }
+            }
+        },
+        "/vitals/manual": {
+            "post": {
+                "summary": "Submit manual vital",
+                "responses": {
+                    "201": {
+                        "description": "Vital created"
+                    }
+                }
+            }
+        }
+    }
+}
