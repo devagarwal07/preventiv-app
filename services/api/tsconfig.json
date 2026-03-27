@@ -1,7 +1,7 @@
 {
     "extends": "../../tsconfig.json",
     "compilerOptions": {
-        "rootDir": "src",
+        "rootDir": "../..",
         "outDir": "dist",
         "baseUrl": "../..",
         "paths": {
@@ -20,6 +20,8 @@
         "noEmit": false
     },
     "include": [
-        "src"
+        "src",
+        "../../packages/shared-types/src",
+        "../../packages/validators/src"
     ]
 }

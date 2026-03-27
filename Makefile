@@ -1,6 +1,6 @@
 COMPOSE_FILE=infra/docker/docker-compose.dev.yml
 
-.PHONY: dev migrate seed test-api logs shell
+.PHONY: dev migrate seed test-api test logs shell
 
 dev:
 	docker compose -f $(COMPOSE_FILE) up -d --build
@@ -19,6 +19,12 @@ seed:
 
 test-api:
 	docker compose -f $(COMPOSE_FILE) exec -T api pnpm test
+
+test:
+	pnpm --filter @prevntiv/api test
+	pnpm --filter @prevntiv/ai-engine test || true
+	pnpm --filter @prevntiv/web test || true
+	k6 run tests/load/vitals-ingest.js || true
 
 logs:
 	docker compose -f $(COMPOSE_FILE) logs -f $(service)

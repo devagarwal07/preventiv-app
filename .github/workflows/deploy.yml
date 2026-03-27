@@ -1,0 +1,69 @@
+name: Deploy Production
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build images
+        run: |
+          docker build -f services/api/Dockerfile -t ghcr.io/${{ github.repository }}/api:${{ github.sha }} .
+          docker build -f services/ai-engine/Dockerfile -t ghcr.io/${{ github.repository }}/ai-engine:${{ github.sha }} .
+          docker build -f services/notification/Dockerfile -t ghcr.io/${{ github.repository }}/notification:${{ github.sha }} .
+          docker build -f apps/web/Dockerfile -t ghcr.io/${{ github.repository }}/web:${{ github.sha }} .
+
+      - name: Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push images
+        run: |
+          docker push ghcr.io/${{ github.repository }}/api:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/ai-engine:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/notification:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository }}/web:${{ github.sha }}
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            cd /opt/prevntiv
+            docker compose -f infra/docker/docker-compose.prod.yml pull
+            docker compose -f infra/docker/docker-compose.prod.yml up -d --remove-orphans

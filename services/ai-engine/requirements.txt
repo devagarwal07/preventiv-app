@@ -6,3 +6,5 @@ pandas
 asyncpg
 pydantic
 python-dotenv
+prometheus-fastapi-instrumentator
+redis

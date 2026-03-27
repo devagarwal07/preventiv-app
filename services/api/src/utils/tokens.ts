@@ -7,25 +7,51 @@ export interface AuthTokenPayload {
     orgId?: string | null;
 }
 
-const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || "dev-access-secret";
-const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "dev-refresh-secret";
+const ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || "dev-access-secret";
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || "dev-refresh-secret";
+const ACCESS_VERIFY_SECRETS = (process.env.JWT_ACCESS_SECRETS || process.env.JWT_ACCESS_SECRET || process.env.JWT_SECRET || "dev-access-secret")
+    .split(",")
+    .map((x) => x.trim())
+    .filter(Boolean);
+const REFRESH_VERIFY_SECRETS = (process.env.JWT_REFRESH_SECRETS || process.env.JWT_REFRESH_SECRET || process.env.JWT_SECRET || "dev-refresh-secret")
+    .split(",")
+    .map((x) => x.trim())
+    .filter(Boolean);
+const ACCESS_EXPIRES_IN = (process.env.JWT_ACCESS_EXPIRES_IN || "15m") as jwt.SignOptions["expiresIn"];
+const REFRESH_EXPIRES_IN = (process.env.JWT_REFRESH_EXPIRES_IN || "7d") as jwt.SignOptions["expiresIn"];
 
 export const signAccessToken = (payload: AuthTokenPayload): string => {
     return jwt.sign(payload, ACCESS_SECRET, {
-        expiresIn: process.env.JWT_ACCESS_EXPIRES_IN || "15m"
+        expiresIn: ACCESS_EXPIRES_IN
     });
 };
 
 export const signRefreshToken = (payload: AuthTokenPayload): string => {
     return jwt.sign(payload, REFRESH_SECRET, {
-        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d"
+        expiresIn: REFRESH_EXPIRES_IN
     });
 };
 
 export const verifyAccessToken = (token: string): AuthTokenPayload => {
-    return jwt.verify(token, ACCESS_SECRET) as AuthTokenPayload;
+    for (const secret of ACCESS_VERIFY_SECRETS) {
+        try {
+            return jwt.verify(token, secret) as AuthTokenPayload;
+        } catch {
+            continue;
+        }
+    }
+
+    throw new Error("Invalid access token");
 };
 
 export const verifyRefreshToken = (token: string): AuthTokenPayload => {
-    return jwt.verify(token, REFRESH_SECRET) as AuthTokenPayload;
+    for (const secret of REFRESH_VERIFY_SECRETS) {
+        try {
+            return jwt.verify(token, secret) as AuthTokenPayload;
+        } catch {
+            continue;
+        }
+    }
+
+    throw new Error("Invalid refresh token");
 };
