@@ -1,6 +1,6 @@
 import pdfParse from "pdf-parse";
 import { pool } from "../db/pool";
-import { minioClient, LAB_BUCKET } from "../labs/minioClient";
+import { getLabObject, LAB_BUCKET } from "../labs/storageClient";
 import { labExtractionQueue } from "../labs/queue";
 import { invalidatePatientEhrCache } from "../patients/service";
 import { socketEvents } from "../realtime/socketServer";
@@ -71,15 +71,7 @@ export const startLabExtractionWorker = (): void => {
         const endTimer = labExtractionDurationSeconds.startTimer();
 
         try {
-            const stream = await minioClient.getObject(LAB_BUCKET, objectKey);
-            const chunks: Buffer[] = [];
-            await new Promise<void>((resolve, reject) => {
-                stream.on("data", (chunk) => chunks.push(chunk));
-                stream.on("end", () => resolve());
-                stream.on("error", (error) => reject(error));
-            });
-
-            const buffer = Buffer.concat(chunks);
+            const buffer = await getLabObject(objectKey);
             const parsed = await pdfParse(buffer);
             const metrics = extractLabMetrics(parsed.text || "");
 
