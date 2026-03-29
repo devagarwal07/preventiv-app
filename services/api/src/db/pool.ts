@@ -9,7 +9,10 @@ if (!DATABASE_URL) {
 
 export const pool = new Pool({
     connectionString: DATABASE_URL,
-    max: Number(process.env.PG_MAX_CONNECTIONS || 20)
+    max: Number(process.env.PG_MAX_CONNECTIONS || 10),
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 export const verifyDbConnection = async (): Promise<boolean> => {
