@@ -4,10 +4,9 @@ const nextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: "http",
-                hostname: process.env.MINIO_PUBLIC_HOST || "localhost",
-                port: process.env.MINIO_PUBLIC_PORT || "9000",
-                pathname: "/**"
+                protocol: "https",
+                hostname: "*.supabase.co",
+                pathname: "/storage/v1/object/public/**"
             }
         ]
     },
