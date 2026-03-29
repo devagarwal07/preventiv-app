@@ -18,7 +18,12 @@ async def init_db_pool() -> asyncpg.Pool:
     if not database_url:
         raise RuntimeError("DATABASE_URL is required for AI engine")
 
-    _pool = await asyncpg.create_pool(database_url, min_size=1, max_size=10)
+    _pool = await asyncpg.create_pool(
+        database_url,
+        min_size=1,
+        max_size=5,
+        ssl="require"
+    )
     return _pool
 
 
