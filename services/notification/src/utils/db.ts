@@ -8,7 +8,10 @@ if (!DATABASE_URL) {
 
 export const pool = new Pool({
     connectionString: DATABASE_URL,
-    max: Number(process.env.PG_MAX_CONNECTIONS || 10)
+    max: Number(process.env.PG_MAX_CONNECTIONS || 5),
+    ssl: {
+        rejectUnauthorized: false
+    }
 });
 
 export const closeDb = async (): Promise<void> => {
