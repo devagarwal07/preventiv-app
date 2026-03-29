@@ -7,8 +7,8 @@ import { labExtractionQueue } from "./queue";
 import {
     getSignedLabObjectUrl,
     parseObjectKeyFromUrl,
-    putLabObject
-} from "./minioClient";
+    uploadLabObject
+} from "./storageClient";
 
 export const uploadLabReport = async (
     file: Express.Multer.File,
@@ -19,7 +19,8 @@ export const uploadLabReport = async (
     const objectKey = `${patientId}/${randomUUID()}.${extension}`;
     let fileUrl: string;
     try {
-        fileUrl = await putLabObject(objectKey, file.buffer, file.mimetype);
+        const objectPath = await uploadLabObject(objectKey, file.buffer, file.mimetype);
+        fileUrl = objectPath;
     } catch {
         throw new AppError("Lab upload service unavailable. Please try again shortly.", 503);
     }
